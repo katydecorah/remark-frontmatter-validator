@@ -21,7 +21,7 @@ test("required", (t) => {
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
       t.equal(data.messages.length, 2);
-      t.equal(data.messages[0].message, "Missing `img` in frontmatter");
+      t.equal(data.messages[0].message, "The field `img` is required");
       t.equal(
         data.messages[1].message,
         'The value of `img` must be "string", it is currently "undefined"'
