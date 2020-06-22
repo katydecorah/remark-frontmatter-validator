@@ -187,3 +187,22 @@ test("the works", (t) => {
       t.end();
     });
 });
+
+test("invalid frontmatter", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      title: {
+        type: "string",
+        required: true,
+      },
+    })
+    .process(vfile.readSync("./test/examples/invalid.md"), (err, data) => {
+      t.equal(data.messages.length, 1);
+      t.equal(
+        data.messages[0].message,
+        "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 13:\n    title: hello: world!\n                ^"
+      );
+      t.end();
+    });
+});

@@ -4,13 +4,13 @@ A [remark](https://github.com/remarkjs/remark-lint) plugin to validate the value
 
 ## Install
 
-Instal the plugin and remark-frontmatter:
+Install the plugin and remark-frontmatter:
 
 ```
 npm install remark-frontmatter-validator remark-frontmatter --save-dev
 ```
 
-Add the plugins to your `.remarkrc`:
+Add the plugin to your `.remarkrc` and define the shape of your frontmatter:
 
 ```json
 {
@@ -41,15 +41,20 @@ Add the plugins to your `.remarkrc`:
 
 ## Options
 
-The shape is an object, where the key matches the key in the frontmatter:
+The plugin accepts an object that describes the fields in your frontmatter. Each key of the object should match a key in your frontmatter. The key's value is an object that describes the value.
+
+In the example below, `title` is a required value and it must be a string:
 
 ```json
 "title": {
-  "type": "string"
+  "type": "string",
+  "required": true
 }
 ```
 
-You can further describe each value:
+### Field object
+
+The key's value is an object that describes the value.
 
 - `type` - The value's [type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
 - `maxLength` - The value's maximum length.
@@ -57,7 +62,7 @@ You can further describe each value:
 - `match` - A [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) that the value must match.
 - `required` - Set the value as `true` if it is required.
 
-There can be up to 2 tags and it can match writing, code, or notes:
+In the example below, there can be up to 2 `tags` and it can match "writing", "code", or "notes":
 
 ```json
 "tags": {
@@ -67,7 +72,7 @@ There can be up to 2 tags and it can match writing, code, or notes:
 }
 ```
 
-The image path must match the regex (✅ `2020-10-31-cat.png`, 🚫 `cat.gif`):
+In the example below, the `image` path must match the regex (where `2020-10-31-cat.png` is valid and `cat.gif` is invalid) and it is required:
 
 ```json
 "image": {
