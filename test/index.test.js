@@ -225,3 +225,18 @@ test("oneOf string", (t) => {
       }
     );
 });
+
+test("match date", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      date: {
+        required: true,
+        match: "\\d\\d",
+      },
+    })
+    .process(vfile.readSync("./test/examples/date-match.md"), (err, data) => {
+      t.equal(data.messages.length, 0);
+      t.end();
+    });
+});
