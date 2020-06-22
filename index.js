@@ -43,7 +43,9 @@ function yaml(ast, file, options) {
 
     const isMaxLength = (label, value, maxLength) => {
       if (value.length > maxLength)
-        file.message(`There cannot be more than ${maxLength} \`${label}\``);
+        file.message(
+          `The maximum length of \`${label}\` value is ${maxLength}, the value you entered "${value}" has a length of ${value.length}`
+        );
     };
 
     const isOneOf = (label, value, options) => {

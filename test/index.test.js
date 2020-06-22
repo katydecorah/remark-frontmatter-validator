@@ -66,3 +66,30 @@ test("regex, not ok", (t) => {
       t.end();
     });
 });
+
+test("maxlength", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      required: {
+        tags: {
+          maxLength: "1",
+        },
+        id: {
+          maxLength: "2",
+        },
+      },
+    })
+    .process(vfile.readSync("./test/examples/length.md"), (err, data) => {
+      t.equal(data.messages.length, 2);
+      t.equal(
+        data.messages[0].message,
+        'The maximum length of `tags` value is 1, the value you entered "writing,code,JavaScript" has a length of 3'
+      );
+      t.equal(
+        data.messages[1].message,
+        'The maximum length of `id` value is 2, the value you entered "abcd" has a length of 4'
+      );
+      t.end();
+    });
+});
