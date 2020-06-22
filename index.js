@@ -18,7 +18,9 @@ function yaml(ast, file, options) {
         );
     };
 
-    function checkRules(rules, label, value) {
+    function checkRules(rules, label, value, required) {
+      // if not required and it does not have a value, skip it.
+      if (!required && !value) return;
       if (rules && rules.maxLength) {
         isMaxLength(label, value, rules.maxLength);
       }
@@ -65,7 +67,7 @@ function yaml(ast, file, options) {
           const rules = options[label];
           const value = items[label];
           if (rules.required) hasField(label, value);
-          checkRules(rules, label, value);
+          checkRules(rules, label, value, rules.required);
         });
       } catch (err) {
         file.message(err, node);

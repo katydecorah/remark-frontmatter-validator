@@ -89,3 +89,60 @@ test("maxlength", (t) => {
       t.end();
     });
 });
+
+test("the works", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      tags: {
+        maxLength: 5,
+        type: "object",
+        oneOf: [
+          "CodePen",
+          "Sass",
+          "Haml",
+          "Dribbble",
+          "API",
+          "Jekyll",
+          "Node.js",
+          "CSS",
+          "animation",
+          "writing",
+          "AWS",
+          "Google Sheets",
+          "JavaScript",
+          "Ela Conf",
+          "jQuery",
+          "AngularJS",
+          "recipe",
+          "Zapier",
+          "podcasts",
+          "speaking",
+          "Glitch",
+          "Git",
+          "PHP",
+          "GitHub",
+          "Airtable",
+          "Google Docs",
+        ],
+      },
+      pen: {
+        type: "string",
+        maxLength: "7",
+      },
+      image: {
+        match: "^\\d\\d\\d\\d-\\d\\d-\\d\\d-.*.(png|jpg)",
+        type: "string",
+        required: true,
+      },
+      title: {
+        type: "string",
+        required: true,
+      },
+    })
+    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
+      t.equal(data.messages.length, 0);
+
+      t.end();
+    });
+});
