@@ -183,7 +183,6 @@ test("the works", (t) => {
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
       t.equal(data.messages.length, 0);
-
       t.end();
     });
 });
@@ -232,7 +231,7 @@ test("match date", (t) => {
     .use(plugin, {
       date: {
         required: true,
-        match: "\\d\\d",
+        match: "^\\d\\d\\d\\d",
       },
     })
     .process(vfile.readSync("./test/examples/date-match.md"), (err, data) => {
