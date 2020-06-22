@@ -56,7 +56,7 @@ In the example below, `title` is a required value and it must be a string:
 
 The key's value is an object that describes the value.
 
-- `type` - The value's [type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
+- `type` - The value's type: `string`, `object`, `number`, `boolean`, `array`, or `date`.
 - `maxLength` - The value's maximum length.
 - `oneOf` - An array of options that the value must match.
 - `match` - A [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) that the value must match.

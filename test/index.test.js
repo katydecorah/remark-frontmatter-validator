@@ -90,26 +90,6 @@ test("isMaxLength", (t) => {
     });
 });
 
-test("isType", (t) => {
-  remark()
-    .use(frontmatter, ["yaml"])
-    .use(plugin, {
-      tags: {
-        maxLength: "4",
-        type: "string",
-        required: true,
-      },
-    })
-    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 1);
-      t.equal(
-        data.messages[0].message,
-        'The value of `tags` must be "string", it is currently "object"'
-      );
-      t.end();
-    });
-});
-
 test("oneOf", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
@@ -223,19 +203,4 @@ test("oneOf string", (t) => {
         t.end();
       }
     );
-});
-
-test("match date", (t) => {
-  remark()
-    .use(frontmatter, ["yaml"])
-    .use(plugin, {
-      date: {
-        required: true,
-        match: "^\\d\\d\\d\\d",
-      },
-    })
-    .process(vfile.readSync("./test/examples/date-match.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
-    });
 });
