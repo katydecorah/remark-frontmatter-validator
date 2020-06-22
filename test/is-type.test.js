@@ -96,7 +96,7 @@ test("isType, date", (t) => {
         type: "date",
       },
     })
-    .process(vfile.readSync("./test/examples/date-match.md"), (err, data) => {
+    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
       t.equal(data.messages.length, 0);
       t.end();
     });
