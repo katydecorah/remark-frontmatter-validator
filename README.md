@@ -1,4 +1,4 @@
-# remark-frontmatter-validator
+# remark-frontmatter-validator ![Test](https://github.com/katydecorah/remark-frontmatter-validator/workflows/Test/badge.svg)
 
 A [remark](https://github.com/remarkjs/remark-lint) plugin to validate the values in your frontmatter.
 
