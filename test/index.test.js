@@ -206,3 +206,22 @@ test("invalid frontmatter", (t) => {
       t.end();
     });
 });
+
+test("oneOf string", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      category: {
+        type: "string",
+        required: true,
+        oneOf: ["code"],
+      },
+    })
+    .process(
+      vfile.readSync("./test/examples/one-of-string.md"),
+      (err, data) => {
+        t.equal(data.messages.length, 0);
+        t.end();
+      }
+    );
+});
