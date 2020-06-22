@@ -10,13 +10,13 @@ test("required", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
-      required: {
-        title: {
-          type: "string",
-        },
-        img: {
-          type: "string",
-        },
+      title: {
+        type: "string",
+        required: true,
+      },
+      img: {
+        type: "string",
+        required: true,
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
@@ -34,10 +34,8 @@ test("regex, ok", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
-      optional: {
-        image: {
-          match: ".*.(jpg|png|gif)$",
-        },
+      image: {
+        match: ".*.(jpg|png|gif)$",
       },
     })
     .process(vfile.readSync("./test/examples/regex.md"), (err, data) => {
@@ -50,10 +48,8 @@ test("regex, not ok", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
-      optional: {
-        image: {
-          match: ".*.(jpg|png)$",
-        },
+      image: {
+        match: ".*.(jpg|png)$",
       },
     })
     .process(vfile.readSync("./test/examples/regex.md"), (err, data) => {
@@ -71,13 +67,13 @@ test("maxlength", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
-      required: {
-        tags: {
-          maxLength: "1",
-        },
-        id: {
-          maxLength: "2",
-        },
+      tags: {
+        maxLength: "1",
+        required: true,
+      },
+      id: {
+        maxLength: "2",
+        required: true,
       },
     })
     .process(vfile.readSync("./test/examples/length.md"), (err, data) => {

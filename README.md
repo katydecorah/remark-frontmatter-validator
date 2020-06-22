@@ -21,18 +21,16 @@ Add the plugins to your `.remarkrc`:
       [
         2,
         {
-          "required": {
-            "title": {
-              "type": "string"
-            },
-            "image": {
-              "type": "string"
-            }
+          "title": {
+            "type": "string",
+            "required": true
           },
-          "optional": {
-            "tags": {
-              "type": "object"
-            }
+          "image": {
+            "type": "string",
+            "required": true
+          },
+          "tags": {
+            "type": "object"
           }
         }
       ]
@@ -42,13 +40,6 @@ Add the plugins to your `.remarkrc`:
 ```
 
 ## Options
-
-The plugin takes two options:
-
-- required
-- optional
-
-Both are formatted similarly, however all required keys are required.
 
 The shape is an object, where the key matches the key in the frontmatter:
 
@@ -60,10 +51,11 @@ The shape is an object, where the key matches the key in the frontmatter:
 
 You can further describe each value:
 
-- `type` - The values [type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
+- `type` - The value's [type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
 - `maxLength` - The value's maximum length.
-- `oneOf` - An array of options that the value must match.,
+- `oneOf` - An array of options that the value must match.
 - `match` - A [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) that the value must match.
+- `required` - Set the value as `true` if it is required.
 
 There can be up to 2 tags and it can match writing, code, or notes:
 
@@ -75,11 +67,12 @@ There can be up to 2 tags and it can match writing, code, or notes:
 }
 ```
 
-The image path must the regex(✅ `2020-10-31-cat.png`, 🚫 `cat.gif`):
+The image path must match the regex (✅ `2020-10-31-cat.png`, 🚫 `cat.gif`):
 
 ```json
 "image": {
   "match": "^\\d\\d\\d\\d-\\d\\d-\\d\\d-.*.(png|jpg)",
-  "type": "string"
+  "type": "string",
+  "required": true
 },
 ```
