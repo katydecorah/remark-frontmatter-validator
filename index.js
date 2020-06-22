@@ -8,16 +8,6 @@ const jsyaml = require("js-yaml");
 function yaml(ast, file, options) {
   visit(ast, "yaml", visitor);
   function visitor(node) {
-    const hasField = (label, field) => {
-      if (!field) file.message(`Missing \`${label}\` in frontmatter`);
-    };
-    const isType = (label, value, type) => {
-      if (typeof value !== type)
-        file.message(
-          `\`${label}\` must be a "${type}", it is currently a ${typeof value}`
-        );
-    };
-
     function checkRules(rules, label, value, required) {
       // if not required and it does not have a value, skip it.
       if (!required && !value) return;
@@ -38,23 +28,35 @@ function yaml(ast, file, options) {
     const isMatch = (label, value, regex) => {
       regex = new RegExp(regex);
       if (!value.match(regex)) {
-        file.message(`\`${label}\` value "${value}" does not match ${regex}`);
+        file.message(
+          `The value of \`${label}\` "${value}" does not match the pattern: "${regex}"`
+        );
       }
     };
 
     const isMaxLength = (label, value, maxLength) => {
       if (value.length > maxLength)
         file.message(
-          `The maximum length of \`${label}\` value is ${maxLength}, the value you entered "${value}" has a length of ${value.length}`
+          `The value of \`${label}\` has a maximum length of ${maxLength}, the value you entered "${value}" has a length of ${value.length}`
         );
     };
 
     const isOneOf = (label, value, options) => {
       if (options.indexOf(value) === -1)
         file.message(
-          `The \`${label}\` "${value}" is not a valid option. Choose from: ${options.join(
+          `The value of \`${label}\` "${value}" is not a valid option. Choose from: ${options.join(
             ", "
           )}`
+        );
+    };
+
+    const hasField = (label, field) => {
+      if (!field) file.message(`Missing \`${label}\` in frontmatter`);
+    };
+    const isType = (label, value, type) => {
+      if (typeof value !== type)
+        file.message(
+          `The value of \`${label}\` must be "${type}", it is currently "${typeof value}"`
         );
     };
 

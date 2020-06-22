@@ -24,13 +24,13 @@ test("required", (t) => {
       t.equal(data.messages[0].message, "Missing `img` in frontmatter");
       t.equal(
         data.messages[1].message,
-        '`img` must be a "string", it is currently a undefined'
+        'The value of `img` must be "string", it is currently "undefined"'
       );
       t.end();
     });
 });
 
-test("regex, ok", (t) => {
+test("isMatch", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -44,7 +44,7 @@ test("regex, ok", (t) => {
     });
 });
 
-test("regex, not ok", (t) => {
+test("isMatch, not ok", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -56,14 +56,14 @@ test("regex, not ok", (t) => {
       t.equal(data.messages.length, 1);
       t.equal(
         data.messages[0].message,
-        '`image` value "cat.gif" does not match /.*.(jpg|png)$/'
+        'The value of `image` "cat.gif" does not match the pattern: "/.*.(jpg|png)$/"'
       );
 
       t.end();
     });
 });
 
-test("maxlength", (t) => {
+test("isMaxLength", (t) => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -80,11 +80,52 @@ test("maxlength", (t) => {
       t.equal(data.messages.length, 2);
       t.equal(
         data.messages[0].message,
-        'The maximum length of `tags` value is 1, the value you entered "writing,code,JavaScript" has a length of 3'
+        'The value of `tags` has a maximum length of 1, the value you entered "writing,code,JavaScript" has a length of 3'
       );
       t.equal(
         data.messages[1].message,
-        'The maximum length of `id` value is 2, the value you entered "abcd" has a length of 4'
+        'The value of `id` has a maximum length of 2, the value you entered "abcd" has a length of 4'
+      );
+      t.end();
+    });
+});
+
+test("isType", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      tags: {
+        maxLength: "4",
+        type: "string",
+        required: true,
+      },
+    })
+    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
+      t.equal(data.messages.length, 1);
+      t.equal(
+        data.messages[0].message,
+        'The value of `tags` must be "string", it is currently "object"'
+      );
+      t.end();
+    });
+});
+
+test("oneOf", (t) => {
+  remark()
+    .use(frontmatter, ["yaml"])
+    .use(plugin, {
+      tags: {
+        maxLength: "4",
+        type: "object",
+        required: true,
+        oneOf: ["cool", "beans"],
+      },
+    })
+    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
+      t.equal(data.messages.length, 1);
+      t.equal(
+        data.messages[0].message,
+        'The value of `tags` "CSS" is not a valid option. Choose from: cool, beans'
       );
       t.end();
     });
