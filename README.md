@@ -30,7 +30,7 @@ Add the plugin to your `.remarkrc` and define the shape of your frontmatter:
             "required": true
           },
           "tags": {
-            "type": "object"
+            "type": "array"
           }
         }
       ]
@@ -66,7 +66,7 @@ In the example below, there can be up to 2 `tags` and it can match "writing", "c
 
 ```json
 "tags": {
-  "type": "object",
+  "type": "array",
   "maxLength": 2,
   "oneOf": ["writing", "code", "notes"]
 }
