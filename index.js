@@ -4,7 +4,7 @@ const rule = require("unified-lint-rule");
 const visit = require("unist-util-visit");
 const generated = require("unist-util-generated");
 const jsyaml = require("js-yaml");
-const { checkRules, hasField } = require("./lib/rules.js");
+const { checkRules, isRequired } = require("./lib/rules.js");
 
 function yaml(ast, file, options) {
   visit(ast, "yaml", visitor);
@@ -17,7 +17,7 @@ function yaml(ast, file, options) {
         Object.keys(options).forEach((label) => {
           const rules = options[label];
           const value = frontmatter[label];
-          if (rules.required) hasField(file, label, value);
+          if (rules.required) isRequired(file, label, value);
           checkRules(file, rules, label, value, rules.required);
         });
       } catch (err) {
