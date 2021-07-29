@@ -18,6 +18,7 @@ function yaml(ast, file, options) {
           const rules = options[label];
           const value = frontmatter[label];
           if (rules.required) isRequired(file, label, value);
+          if (!value) return
           checkRules(file, rules, label, value, rules.required);
         });
       } catch (err) {
