@@ -70,14 +70,16 @@ describe("remark-frontmatter-validator", () => {
       })
       .process(readSync("./test/examples/invalid.md"), (err, data) => {
         expect(data.messages.length).toBe(1);
-        expect(data.messages[0].message).toMatchInlineSnapshot(`
-        "bad indentation of a mapping entry (1:13)
+        expect(data.messages).toMatchInlineSnapshot(`
+          [
+            [./test/examples/invalid.md:1:1-6:4: bad indentation of a mapping entry (1:13)
 
-         1 | title: hello: world!
-        -----------------^
-         2 | image: 2020-10-31-black-cat.png
-         3 | tags:"
-      `);
+           1 | title: hello: world!
+          -----------------^
+           2 | image: 2020-10-31-black-cat.png
+           3 | tags:],
+          ]
+        `);
       });
   });
 
@@ -126,11 +128,11 @@ describe("remark-frontmatter-validator", () => {
       .process(readSync("./test/examples/length.md"), (err, data) => {
         expect(data.messages.length).toBe(2);
         expect(data.messages).toMatchInlineSnapshot(`
-        [
-          [./test/examples/length.md:1:1: The value of \`tags\` has a maximum length of 1, the value you entered "writing,code,JavaScript" has a length of 3],
-          [./test/examples/length.md:1:1: The value of \`id\` has a maximum length of 2, the value you entered "abcd" has a length of 4],
-        ]
-      `);
+                  [
+                    [./test/examples/length.md:1:1: The value of \`tags\` has a maximum length of 1, the value you entered "writing,code,JavaScript" has a length of 3],
+                    [./test/examples/length.md:1:1: The value of \`id\` has a maximum length of 2, the value you entered "abcd" has a length of 4],
+                  ]
+              `);
       });
   });
 
@@ -148,10 +150,10 @@ describe("remark-frontmatter-validator", () => {
       .process(readSync("./test/examples/works.md"), (err, data) => {
         expect(data.messages.length).toBe(1);
         expect(data.messages).toMatchInlineSnapshot(`
-        [
-          [./test/examples/works.md:1:1: The value of \`tags\` "CSS" is not a valid option. Choose from: cool, beans],
-        ]
-      `);
+                  [
+                    [./test/examples/works.md:1:1: The value of \`tags\` "CSS" is not a valid option. Choose from: cool, beans],
+                  ]
+              `);
       });
   });
 
@@ -186,11 +188,11 @@ describe("remark-frontmatter-validator", () => {
       .process(readSync("./test/examples/works.md"), (err, data) => {
         expect(data.messages.length).toBe(2);
         expect(data.messages).toMatchInlineSnapshot(`
-        [
-          [./test/examples/works.md:1:1: The field \`img\` is required],
-          [./test/examples/works.md:1:1: The value of \`img\` must be "string", it is currently "undefined"],
-        ]
-      `);
+                  [
+                    [./test/examples/works.md:1:1: The field \`img\` is required],
+                    [./test/examples/works.md:1:1: The value of \`img\` must be "string", it is currently "undefined"],
+                  ]
+              `);
       });
   });
 
@@ -207,10 +209,10 @@ describe("remark-frontmatter-validator", () => {
       .process(readSync("./test/examples/works.md"), (err, data) => {
         expect(data.messages.length).toBe(1);
         expect(data.messages).toMatchInlineSnapshot(`
-        [
-          [./test/examples/works.md:1:1: The value of \`tags\` must be "string", it is currently "object"],
-        ]
-      `);
+                  [
+                    [./test/examples/works.md:1:1: The value of \`tags\` must be "string", it is currently "object"],
+                  ]
+              `);
       });
   });
 
