@@ -6,6 +6,7 @@ tags:
   - CSS
 order: 100
 offline: true
+anotherBoolean: false
 authors:
   - name: Katy
   - name: Jason

@@ -271,6 +271,18 @@ describe("remark-frontmatter-validator", () => {
       .process(readSync("./test/examples/works.md"), (err, data) => {
         expect(data.messages.length).toBe(0);
       });
+
+    remark()
+      .use(frontmatter, ["yaml"])
+      .use(plugin, {
+        anotherBoolean: {
+          type: "boolean",
+          required: true,
+        },
+      })
+      .process(readSync("./test/examples/works.md"), (err, data) => {
+        expect(data.messages.length).toBe(0);
+      });
   });
 
   test("isType, date", () => {
