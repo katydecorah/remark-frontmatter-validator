@@ -4,9 +4,8 @@ const remark = require("remark");
 const plugin = require("../index.js");
 const frontmatter = require("remark-frontmatter");
 const vfile = require("to-vfile");
-const test = require("tape");
 
-test("isMaxLength", (t) => {
+test("isMaxLength", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -20,15 +19,12 @@ test("isMaxLength", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/length.md"), (err, data) => {
-      t.equal(data.messages.length, 2);
-      t.equal(
-        data.messages[0].message,
-        'The value of `tags` has a maximum length of 1, the value you entered "writing,code,JavaScript" has a length of 3'
-      );
-      t.equal(
-        data.messages[1].message,
-        'The value of `id` has a maximum length of 2, the value you entered "abcd" has a length of 4'
-      );
-      t.end();
+      expect(data.messages.length).toBe(2);
+      expect(data.messages).toMatchInlineSnapshot(`
+        [
+          [./test/examples/length.md:1:1: The value of \`tags\` has a maximum length of 1, the value you entered "writing,code,JavaScript" has a length of 3],
+          [./test/examples/length.md:1:1: The value of \`id\` has a maximum length of 2, the value you entered "abcd" has a length of 4],
+        ]
+      `);
     });
 });

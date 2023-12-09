@@ -4,9 +4,8 @@ const remark = require("remark");
 const plugin = require("../index.js");
 const frontmatter = require("remark-frontmatter");
 const vfile = require("to-vfile");
-const test = require("tape");
 
-test("the works", (t) => {
+test("the works", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -57,12 +56,11 @@ test("the works", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("invalid frontmatter", (t) => {
+test("invalid frontmatter", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -72,11 +70,11 @@ test("invalid frontmatter", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/invalid.md"), (err, data) => {
-      t.equal(data.messages.length, 1);
-      t.equal(
-        data.messages[0].message,
-        "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 13:\n    title: hello: world!\n                ^"
-      );
-      t.end();
+      expect(data.messages.length).toBe(1);
+      expect(data.messages[0].message).toMatchInlineSnapshot(`
+        "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 13:
+            title: hello: world!
+                        ^"
+      `);
     });
 });

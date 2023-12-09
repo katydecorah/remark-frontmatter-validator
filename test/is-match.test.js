@@ -4,9 +4,8 @@ const remark = require("remark");
 const plugin = require("../index.js");
 const frontmatter = require("remark-frontmatter");
 const vfile = require("to-vfile");
-const test = require("tape");
 
-test("isMatch", (t) => {
+test("isMatch", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -15,12 +14,11 @@ test("isMatch", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/regex.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("isMatch, not ok", (t) => {
+test("isMatch, not ok", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -29,12 +27,9 @@ test("isMatch, not ok", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/regex.md"), (err, data) => {
-      t.equal(data.messages.length, 1);
-      t.equal(
-        data.messages[0].message,
-        'The value of `image` "cat.gif" does not match the pattern: "/.*.(jpg|png)$/"'
+      expect(data.messages.length).toBe(1);
+      expect(data.messages[0].message).toMatchInlineSnapshot(
+        `"The value of \`image\` "cat.gif" does not match the pattern: "/.*.(jpg|png)$/""`
       );
-
-      t.end();
     });
 });

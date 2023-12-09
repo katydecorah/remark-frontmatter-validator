@@ -4,9 +4,8 @@ const remark = require("remark");
 const plugin = require("../index.js");
 const frontmatter = require("remark-frontmatter");
 const vfile = require("to-vfile");
-const test = require("tape");
 
-test("isType, not ok", (t) => {
+test("isType, not ok", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -17,16 +16,16 @@ test("isType, not ok", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 1);
-      t.equal(
-        data.messages[0].message,
-        'The value of `tags` must be "string", it is currently "object"'
-      );
-      t.end();
+      expect(data.messages.length).toBe(1);
+      expect(data.messages).toMatchInlineSnapshot(`
+        [
+          [./test/examples/works.md:1:1: The value of \`tags\` must be "string", it is currently "object"],
+        ]
+      `);
     });
 });
 
-test("isType, array", (t) => {
+test("isType, array", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -37,12 +36,11 @@ test("isType, array", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("isType, string", (t) => {
+test("isType, string", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -52,12 +50,11 @@ test("isType, string", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("isType, number", (t) => {
+test("isType, number", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -67,12 +64,11 @@ test("isType, number", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("isType, boolean", (t) => {
+test("isType, boolean", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -82,12 +78,11 @@ test("isType, boolean", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("isType, date", (t) => {
+test("isType, date", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -97,12 +92,11 @@ test("isType, date", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
 
-test("isType, object", (t) => {
+test("isType, object", () => {
   remark()
     .use(frontmatter, ["yaml"])
     .use(plugin, {
@@ -112,7 +106,6 @@ test("isType, object", (t) => {
       },
     })
     .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
-      t.equal(data.messages.length, 0);
-      t.end();
+      expect(data.messages.length).toBe(0);
     });
 });
