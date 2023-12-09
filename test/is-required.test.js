@@ -1,9 +1,7 @@
-"use strict";
-
-const remark = require("remark");
-const plugin = require("../index.js");
-const frontmatter = require("remark-frontmatter");
-const vfile = require("to-vfile");
+import { remark } from "remark";
+import plugin from "../index.js";
+import frontmatter from "remark-frontmatter";
+import { readSync } from "to-vfile";
 
 test("isRequired", () => {
   remark()
@@ -18,7 +16,7 @@ test("isRequired", () => {
         required: true,
       },
     })
-    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
+    .process(readSync("./test/examples/works.md"), (err, data) => {
       expect(data.messages.length).toBe(2);
       expect(data.messages).toMatchInlineSnapshot(`
         [

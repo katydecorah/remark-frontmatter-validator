@@ -1,3 +1,5 @@
 .github
 .eslintrc
 test
+jest.config.cjs
+.vscode

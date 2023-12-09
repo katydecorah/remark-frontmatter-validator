@@ -1,10 +1,9 @@
-"use strict";
-
-const rule = require("unified-lint-rule");
-const visit = require("unist-util-visit");
-const generated = require("unist-util-generated");
-const jsyaml = require("js-yaml");
-const { checkRules, isRequired } = require("./lib/rules.js");
+import { lintRule } from "unified-lint-rule";
+import { visit } from "unist-util-visit";
+import { generated } from "unist-util-generated";
+import { load } from "js-yaml";
+import { checkRules } from "./lib/rules.js";
+import { isRequired } from "./lib/is-required.js";
 
 function yaml(ast, file, options) {
   visit(ast, "yaml", visitor);
@@ -12,8 +11,8 @@ function yaml(ast, file, options) {
     if (!generated(node)) {
       try {
         // yaml is valid
-        jsyaml.safeLoad(node.value);
-        const frontmatter = jsyaml.safeLoad(node.value);
+        load(node.value);
+        const frontmatter = load(node.value);
         Object.keys(options).forEach((label) => {
           const rules = options[label];
           const value = frontmatter[label];
@@ -27,4 +26,4 @@ function yaml(ast, file, options) {
   }
 }
 
-module.exports = rule("remark-lint:frontmatter-validator", yaml);
+export default lintRule("remark-lint:frontmatter-validator", yaml);

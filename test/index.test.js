@@ -1,9 +1,7 @@
-"use strict";
-
-const remark = require("remark");
-const plugin = require("../index.js");
-const frontmatter = require("remark-frontmatter");
-const vfile = require("to-vfile");
+import { remark } from "remark";
+import plugin from "../index.js";
+import frontmatter from "remark-frontmatter";
+import { readSync } from "to-vfile";
 
 test("the works", () => {
   remark()
@@ -55,7 +53,7 @@ test("the works", () => {
         required: true,
       },
     })
-    .process(vfile.readSync("./test/examples/works.md"), (err, data) => {
+    .process(readSync("./test/examples/works.md"), (err, data) => {
       expect(data.messages.length).toBe(0);
     });
 });
@@ -69,12 +67,15 @@ test("invalid frontmatter", () => {
         required: true,
       },
     })
-    .process(vfile.readSync("./test/examples/invalid.md"), (err, data) => {
+    .process(readSync("./test/examples/invalid.md"), (err, data) => {
       expect(data.messages.length).toBe(1);
       expect(data.messages[0].message).toMatchInlineSnapshot(`
-        "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 13:
-            title: hello: world!
-                        ^"
+        "bad indentation of a mapping entry (1:13)
+
+         1 | title: hello: world!
+        -----------------^
+         2 | image: 2020-10-31-black-cat.png
+         3 | tags:"
       `);
     });
 });
