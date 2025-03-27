@@ -122,15 +122,15 @@ describe("remark-frontmatter-validator", () => {
     });
     expect(vFile.messages.length).toBe(1);
     expect(vFile.messages).toMatchInlineSnapshot(`
-        [
-          [1:1-6:4: bad indentation of a mapping entry (1:13)
+      [
+        [1:1-6:4: Error parsing YAML frontmatter: bad indentation of a mapping entry (1:13)
 
-         1 | title: hello: world!
-        -----------------^
-         2 | image: 2020-10-31-black-cat.png
-         3 | tags:],
-        ]
-      `);
+       1 | title: hello: world!
+      -----------------^
+       2 | image: 2020-10-31-black-cat.png
+       3 | tags:],
+      ]
+    `);
   });
 
   test("missing frontmatter", async () => {
@@ -304,7 +304,7 @@ describe("remark-frontmatter-validator", () => {
     expect(vFile.messages.length).toBe(0);
   });
 
-  test("isType, boolean", async () => {
+  test("isType, boolean another", async () => {
     const vFile = await processMarkdown(worksMd, {
       anotherBoolean: {
         type: "boolean",
