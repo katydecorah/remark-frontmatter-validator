@@ -1,5 +1,5 @@
 .github
 eslint.config.js
 test.js
-jest.config.cjs
+jest.config.js
 .vscode
