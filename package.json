@@ -1,6 +1,6 @@
 {
   "name": "remark-frontmatter-validator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Validate the values in your frontmatter",
   "type": "module",
   "exports": "./index.js",
