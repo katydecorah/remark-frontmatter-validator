@@ -3,7 +3,10 @@ import { visit } from "unist-util-visit";
 import { generated } from "unist-util-generated";
 import { load } from "js-yaml";
 
-function validateFrontmatter(ast, file, options) {
+function validateFrontmatter(ast, file, options = {}) {
+  const defaultOptions = { allowMissingFrontmatter: false };
+  options = { ...defaultOptions, ...options };
+
   let hasYaml = false;
 
   visit(ast, "yaml", function visitor(node) {
@@ -18,7 +21,7 @@ function validateFrontmatter(ast, file, options) {
         checkRules(file, rules, label, value, rules.required);
       });
     } catch (err) {
-      file.message(err.message, node);
+      file.message(`Error parsing YAML frontmatter: ${err.message}`, node);
     }
   });
 
@@ -52,10 +55,10 @@ export const checkRules = (file, rules, label, value, required) => {
 };
 
 export const isMatch = (file, label, value, regex) => {
-  regex = new RegExp(regex);
-  if (!value.match(regex)) {
+  const compiledRegex = typeof regex === "string" ? new RegExp(regex) : regex;
+  if (!compiledRegex.test(value)) {
     file.message(
-      `The value of \`${label}\` "${value}" does not match the pattern: "${regex}"`
+      `The value of \`${label}\` "${value}" does not match the pattern: "${compiledRegex}"`
     );
   }
 };
