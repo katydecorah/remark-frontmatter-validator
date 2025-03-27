@@ -14,6 +14,11 @@ function validateFrontmatter(ast, file, options = {}) {
     if (generated(node)) return;
     try {
       const frontmatter = load(node.value);
+
+      if (!frontmatter) {
+        file.message("YAML frontmatter is empty.", node);
+        return;
+      }
       Object.keys(options).forEach((label) => {
         const rules = options[label];
         const value = frontmatter[label];
