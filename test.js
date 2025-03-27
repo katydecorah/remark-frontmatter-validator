@@ -59,6 +59,8 @@ category: code
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 `;
 
+const missingYamlMd = dedent`Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+
 describe("remark-frontmatter-validator", () => {
   test("the works", async () => {
     const vFile = await processMarkdown(worksMd, {
@@ -129,6 +131,31 @@ describe("remark-frontmatter-validator", () => {
          3 | tags:],
         ]
       `);
+  });
+
+  test("missing frontmatter", async () => {
+    const vFile = await processMarkdown(missingYamlMd, {
+      title: {
+        type: "string",
+        required: true,
+      },
+    });
+    expect(vFile.messages).toMatchInlineSnapshot(`
+      [
+        [1:1: The file does not contain YAML frontmatter.],
+      ]
+    `);
+  });
+
+  test("missing frontmatter, allowed", async () => {
+    const vFile = await processMarkdown(missingYamlMd, {
+      allowMissingFrontmatter: true,
+      title: {
+        type: "string",
+        required: true,
+      },
+    });
+    expect(vFile.messages).toMatchInlineSnapshot(`[]`);
   });
 
   test("isMatch", async () => {
