@@ -4,21 +4,27 @@ import { generated } from "unist-util-generated";
 import { load } from "js-yaml";
 
 function validateFrontmatter(ast, file, options) {
+  let hasYaml = false;
+
   visit(ast, "yaml", function visitor(node) {
-    if (!generated(node)) {
-      try {
-        const frontmatter = load(node.value);
-        Object.keys(options).forEach((label) => {
-          const rules = options[label];
-          const value = frontmatter[label];
-          if (rules.required) isRequired(file, label, value);
-          checkRules(file, rules, label, value, rules.required);
-        });
-      } catch (err) {
-        file.message(err.message, node);
-      }
+    hasYaml = true;
+    if (generated(node)) return;
+    try {
+      const frontmatter = load(node.value);
+      Object.keys(options).forEach((label) => {
+        const rules = options[label];
+        const value = frontmatter[label];
+        if (rules.required) isRequired(file, label, value);
+        checkRules(file, rules, label, value, rules.required);
+      });
+    } catch (err) {
+      file.message(err.message, node);
     }
   });
+
+  if (!hasYaml && !options.allowMissingFrontmatter) {
+    file.message("The file does not contain YAML frontmatter.");
+  }
 }
 
 export default lintRule(
