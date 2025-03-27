@@ -304,7 +304,7 @@ describe("remark-frontmatter-validator", () => {
     expect(vFile.messages.length).toBe(0);
   });
 
-  test("isType, boolean", async () => {
+  test("isType, boolean another", async () => {
     const vFile = await processMarkdown(worksMd, {
       anotherBoolean: {
         type: "boolean",
