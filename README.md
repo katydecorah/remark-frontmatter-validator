@@ -86,7 +86,7 @@ In the example below, the `image` path must match the regex (where `2020-10-31-c
 
 The plugin also accepts a global option:
 
-- `allowMissingFrontmatter` - Set to `true` to suppress the error when a file does not contain YAML frontmatter.
+- `allowMissingFrontmatter` (default: `false`) - Set to `true` to suppress the error when a file does not contain YAML frontmatter.
 
 In the example below, the plugin will not throw an error if a file does not contain YAML frontmatter:
 
